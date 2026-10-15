@@ -1,4 +1,4 @@
-# Castlevania: Symphony of the Night — Nintendo DS port
+# Castlevania: Symphony of the Night - Nintendo DS port
 
 An experimental port of **Castlevania: Symphony of the Night** (PlayStation, US
 version SLUS-00067) to the **Nintendo DS**, built on top of the
