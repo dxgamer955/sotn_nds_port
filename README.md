@@ -6,8 +6,12 @@ version SLUS-00067) to the **Nintendo DS**, built on top of the
 port.
 
 The game logic is the decompiled C code of the original game, compiled for the
-DS's ARM9. What the port adds is a platform layer in [`src/nds`](src/nds) that
+DS's ARM9. What the port adds is a platform layer in `src/nds` that
 stands in for the PlayStation hardware: the GPU, the SPU and the CD drive.
+
+> **The source code isn't published yet.** For now this repository only
+> holds this page. The code will land here once the port is complete; the
+> build steps below describe how it will work.
 
 > **No game data is included.** You need your own copy of the game to build a
 > playable ROM. The ROM you build contains the game's data: don't share it.
@@ -15,7 +19,7 @@ stands in for the PlayStation hardware: the GPU, the SPU and the CD drive.
 ## Screenshots
 
 <p align="center">
-  <a href="readme_media/STON_60_sound_2.mp4">
+  <a href="readme_media/gameplay.mp4">
     <img src="readme_media/gameplay.gif" width="512" alt="Gameplay in the Alchemy Laboratory on melonDS">
   </a>
   <br>
@@ -98,7 +102,7 @@ wf-pacman -S blocksds-toolchain
 ```
 
 You also need `cmake`, `ninja-build` and the decomp's own dependencies (Python,
-Go and so on). See [README.decomp.md](README.decomp.md) and the
+Go and so on). See [the decomp's README](https://github.com/Xeeynamo/sotn-decomp#readme) and the
 [upstream docs](https://github.com/Xeeynamo/sotn-decomp).
 
 ### 2. Game files
@@ -142,11 +146,11 @@ DS port reuses it and adds a backend for each PSX chip:
 
 | File | Replaces | How |
 |---|---|---|
-| [`main_nds.c`](src/nds/main_nds.c) | main loop, `DrawOTag` | Boot menu; walks each frame's ordering table and translates PSX primitives; frame pacing and frameskip; audio pump |
-| [`nds_gpu.c`](src/nds/nds_gpu.c) | PSX GPU, 1 MB VRAM | Draws PSX primitives with the DS 3D engine (orthographic projection, depth increasing in draw order, PSX blend modes approximated with alpha) |
-| [`nds_spu.c`](src/nds/nds_spu.c) | PSX SPU, 512 KB sound RAM | Software SPU: decodes PSX ADPCM on the fly and mixes the 24 voices for the decompiled libsnd |
-| [`nds_audio.c`](src/nds/nds_audio.c) | audio output | A maxmod stream at 32768 Hz that mixes CD-XA music and SPU effects |
-| [`nds_hw.c`](src/nds/nds_hw.c) | the rest | Consoles, input, timers, sampling profiler, exception screen |
+| `main_nds.c` | main loop, `DrawOTag` | Boot menu; walks each frame's ordering table and translates PSX primitives; frame pacing and frameskip; audio pump |
+| `nds_gpu.c` | PSX GPU, 1 MB VRAM | Draws PSX primitives with the DS 3D engine (orthographic projection, depth increasing in draw order, PSX blend modes approximated with alpha) |
+| `nds_spu.c` | PSX SPU, 512 KB sound RAM | Software SPU: decodes PSX ADPCM on the fly and mixes the 24 voices for the decompiled libsnd |
+| `nds_audio.c` | audio output | A maxmod stream at 32768 Hz that mixes CD-XA music and SPU effects |
+| `nds_hw.c` | the rest | Consoles, input, timers, sampling profiler, exception screen |
 | `src/pc/psxsdk/libcd.c` | CD drive | Reads the CD-XA music from a raw copy of `XA_STR1` inside the ROM, skipping the interleaved channels of other tracks |
 
 Some details of the DS side:
@@ -196,10 +200,10 @@ arm-none-eabi-addr2line -f -e build_nds/sotn_nds.elf 0x02048c00
 
 - The [sotn-decomp](https://github.com/Xeeynamo/sotn-decomp) project and its
   contributors, for the decompilation and the PC port this is built on (see
-  [README.decomp.md](README.decomp.md)).
+  [the decomp's README](https://github.com/Xeeynamo/sotn-decomp#readme)).
 - [BlocksDS](https://blocksds.skylyrac.net/), libnds and maxmod.
 - [melonDS](https://melonds.kuribo64.net/), used for testing.
 
 Castlevania: Symphony of the Night is © Konami. This project isn't affiliated
 with or endorsed by Konami. The code is licensed under the
-[AGPL-3.0](LICENSE), like the decompilation it is based on.
+[AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html), like the decompilation it is based on.
